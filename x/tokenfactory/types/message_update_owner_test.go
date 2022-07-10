@@ -8,21 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgMintAndSendTokens_ValidateBasic(t *testing.T) {
+func TestMsgUpdateOwner_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgMintAndSendTokens
+		msg  MsgUpdateOwner
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgMintAndSendTokens{
+			msg: MsgUpdateOwner{
 				Owner: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgMintAndSendTokens{
+			msg: MsgUpdateOwner{
 				Owner: sample.AccAddress(),
 			},
 		},

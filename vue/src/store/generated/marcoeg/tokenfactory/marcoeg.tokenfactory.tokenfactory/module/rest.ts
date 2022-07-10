@@ -40,9 +40,11 @@ export interface TokenfactoryDenom {
 
 export type TokenfactoryMsgCreateDenomResponse = object;
 
-export type TokenfactoryMsgDeleteDenomResponse = object;
+export type TokenfactoryMsgMintAndSendTokensResponse = object;
 
 export type TokenfactoryMsgUpdateDenomResponse = object;
+
+export type TokenfactoryMsgUpdateOwnerResponse = object;
 
 /**
  * Params defines the parameters for the module.

@@ -51769,9 +51769,11 @@ definitions:
         type: string
   marcoeg.tokenfactory.tokenfactory.MsgCreateDenomResponse:
     type: object
-  marcoeg.tokenfactory.tokenfactory.MsgDeleteDenomResponse:
+  marcoeg.tokenfactory.tokenfactory.MsgMintAndSendTokensResponse:
     type: object
   marcoeg.tokenfactory.tokenfactory.MsgUpdateDenomResponse:
+    type: object
+  marcoeg.tokenfactory.tokenfactory.MsgUpdateOwnerResponse:
     type: object
   marcoeg.tokenfactory.tokenfactory.Params:
     type: object
