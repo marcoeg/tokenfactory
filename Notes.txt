@@ -1,0 +1,116 @@
+From: https://www.youtube.com/watch?v=m3VxKxj7QPY
+How to create modules with the Cosmos SDK
+
+Reference: https://github.com/taimurworks98/cosmonaut-tokenfactory
+
+Directory created with:
+$ ignite scaffold chain github.com/marcoeg/tokenfactory --no-module
+
+$ cd tokenfactory
+
+Add module tokenfactory
+$ ignite scaffold module tokenfactory --dep account,bank
+
+Add a map Denom data structure
+$ ignite scaffold map Denom description:string ticker:string precision:int \
+    url:string maxSupply:int supply:int canChangeMaxSupply:bool \
+    --signer owner --index denom --module tokenfactory
+
+message Denom {
+  string denom = 1; 
+  string description = 2; 
+  string ticker = 3; 
+  int32 precision = 4; 
+  string url = 5; 
+  int32 maxSupply = 6; 
+  int32 supply = 7; 
+  bool canChangeMaxSupply = 8; 
+  string owner = 9;
+}
+
+Remove the delete Denom functionality
+
+more ..
+
+---
+$ ignite scaffold message MintAndSendTokens denom:string amount:int recipient:string --module tokenfactory --signer owner
+
+$ ignite scaffold message UpdateDenom denom:string newOwner:string --module tokenfactory --signer owner
+
+
+--
+
+$ ignite chain serve --reset-once
+                     --unsafe-reset-all
+
+🙂 Created account "alice" with address "cosmos1pccyzmgrn2ra0v8wduandcpdfq359459xduwf9" with 
+mnemonic: "behave vault that police height basic age party sister theme infant tiger wedding total lava extra gospel solid lemon oven eyebrow forget useless knee"
+🙂 Created account "bob" with address "cosmos15k69zg3zhud3vxxsfc49y42mmrvyg78hjw0nzm" with mnemonic: "crack burden cluster half cave wheel avocado plunge little stay miss tourist capable casual never reduce phone museum vast notice blur honey require enter"
+
+----------------------------------------------
+
+ $ tokenfactoryd keys add meg
+
+- name: meg
+  type: local
+  address: cosmos1ktzrlp6rpgfas0e6gj7y7vu3zz9hvhnqy05tca
+  pubkey: '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"Aw7TGGo8goDjj9X0QKDb8ScHkG0sgC0XbD904b0UFUuV"}'
+  mnemonic: ""
+
+
+**Important** write this mnemonic phrase in a safe place.
+It is the only way to recover your account if you ever forget your password.
+
+major soul diamond ketchup birth organ message despair dragon hedgehog depth stage bronze noodle traffic wheat sleep double myth venue session absorb kid knee
+
+$ tokenfactoryd tx bank send $(tokenfactoryd keys show alice -a) $(tokenfactoryd keys show meg -a) 10stake --chain-id tokenfactory
+
+----------------------------------------------
+
+-- to view blockchain status real time in-terminal explorer for Cosmos SDK blockchains
+$ go install github.com/cosmos/gex@latest
+$ gex
+
+default RPC port is 26657
+$ gex -p 27657
+
+----------------------------------------------
+$ tokenfactoryd tx tokenfactory create-denom ustarport "My denom" IGNITE 6 "some/url" 1000000000 true --from alice
+$ tokenfactoryd query tokenfactory list-denom
+
+$ tokenfactoryd tx tokenfactory --help
+tokenfactory transactions subcommands
+
+Usage:
+  tokenfactoryd tx tokenfactory [flags]
+  tokenfactoryd tx tokenfactory [command]
+
+Available Commands:
+  create-denom         Create a new Denom
+  mint-and-send-tokens Broadcast message MintAndSendTokens
+  update-denom         Update a Denom
+  update-owner         Broadcast message UpdateOwner
+
+Flags:
+  -h, --help   help for tokenfactory
+
+Global Flags:
+      --chain-id string     The network chain ID (default "tokenfactory")
+      --home string         directory for config and data (default "/home/marco/.tokenfactory")
+      --log_format string   The logging format (json|plain) (default "plain")
+      --log_level string    The logging level (trace|debug|info|warn|error|fatal|panic) (default "info")
+      --trace               print out full stack trace on errors
+
+Use "tokenfactoryd tx tokenfactory [command] --help" for more information about a command.
+----------------------------------------------
+
+$ tokenfactoryd tx tokenfactory update-denom ustarport "Starport" "new/url" 2000000000 false --from alice
+
+$ tokenfactoryd tx tokenfactory mint-and-send-tokens ustarport 7777 cosmos1f4c0wgqkj3pxa32357h36629zhwmwqdz8tm2ac --from alice
+
+$ tokenfactoryd query bank balances cosmos1f4c0wgqkj3pxa32357h36629zhwmwqdz8tm2ac
+
+$ tokenfactoryd query tokenfactory list-denom
+
+
+
